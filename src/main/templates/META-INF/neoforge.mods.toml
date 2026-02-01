@@ -1,0 +1,55 @@
+modLoader="javafml"
+
+loaderVersion="${loader_version_range}"
+
+license="${mod_license}"
+
+# A URL to refer people to when problems occur with this mod
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #probs want this to be forked, not fabric page
+
+[[mods]]
+
+modId="${mod_id}"
+
+version="${mod_version}"
+
+displayName="${mod_name}"
+
+# A URL to query for updates for this mod. See the JSON update specification https://docs.neoforged.net/docs/misc/updatechecker/
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+
+# A URL for the "homepage" for this mod, displayed in the mod UI
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+
+logoFile="icon.png"
+
+credits="Zetalasis: Shader Dev, NovaMP4: Initial Artist, Vaer: NeoForge backport :P" 
+
+authors="Jolene <3"
+
+description='''
+All you need to get through the day!
+'''
+
+# The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
+[[mixins]] #unused as of now, keeping it here just in case
+config="${mod_id}.mixins.json"
+
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
+# NeoForge Dependency
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+# Minecraft Dependency
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

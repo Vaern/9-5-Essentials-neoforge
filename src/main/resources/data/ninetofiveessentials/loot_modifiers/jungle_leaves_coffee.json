@@ -1,0 +1,10 @@
+{
+	"type": "neoforge:add_table",
+	"conditions": [
+		{
+			"condition": "neoforge_loot_table_id",
+			"loot_table_id": "minecraft:blocks/jungle_leaves"
+		}
+	],
+	"table": "ninetofiveessentials:blocks/jungle_leaves_coffee"
+}

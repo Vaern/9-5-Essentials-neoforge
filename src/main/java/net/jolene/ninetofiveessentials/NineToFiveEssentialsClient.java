@@ -1,23 +1,52 @@
 package net.jolene.ninetofiveessentials;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
-import net.jolene.ninetofiveessentials.block.ModBlocks;
-import net.jolene.ninetofiveessentials.item.ModItemTooltips;
-import net.jolene.ninetofiveessentials.particle.Coin;
-import net.jolene.ninetofiveessentials.particle.ModParticles;
-import net.jolene.ninetofiveessentials.particle.Puff;
-import net.minecraft.client.render.BlockRenderLayer;
+import net.jolene.ninetofiveessentials.model.UnboundElementsLoader;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
 
-public class NineToFiveEssentialsClient implements ClientModInitializer {
+@Mod(value = NineToFiveEssentials.MODID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = NineToFiveEssentials.MODID, value = Dist.CLIENT)
+public class NineToFiveEssentialsClient {
+	public NineToFiveEssentialsClient(ModContainer container) { }
 
-    @Override
-    public void onInitializeClient() {
-        ParticleFactoryRegistry.getInstance().register(ModParticles.PUFF, Puff.Factory::new);
-        ParticleFactoryRegistry.getInstance().register(ModParticles.COIN, Coin.Factory::new);
-        BlockRenderLayerMap.putBlock(ModBlocks.HEMP_PLANT, BlockRenderLayer.CUTOUT);
-        BlockRenderLayerMap.putBlock(ModBlocks.COFFEE_BUSH, BlockRenderLayer.CUTOUT);
-        ModItemTooltips.registerModItemTooltips();
-    }
+	@SubscribeEvent
+	public static void onClientSetup(FMLClientSetupEvent event) {
+		//Create stack size override for coin-likes; we simply convert from int to float
+		event.enqueueWork(() -> {
+			ItemProperties.registerGeneric(ResourceLocation.fromNamespaceAndPath(NineToFiveEssentials.MODID, "count"), 
+				(stack, level, player, seed) -> stack.getCount());
+		});
+	}
+	
+	/*@SubscribeEvent
+	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+		IClientItemExtensions coinlikes = new IClientItemExtensions() {
+			public boolean shouldSpreadAsEntity(ItemStack stack) { // doesn't prevent multiple from rendering, oh well
+				return false;
+			}
+		};
+		
+		event.registerItem(coinlikes, 
+				ModItems.COIN,
+				ModItems.WHITE_POKER_CHIP,
+				ModItems.RED_POKER_CHIP,
+				ModItems.ORANGE_POKER_CHIP,
+				ModItems.YELLOW_POKER_CHIP,
+				ModItems.GREEN_POKER_CHIP,
+				ModItems.BLACK_POKER_CHIP,
+				ModItems.PURPLE_POKER_CHIP,
+				ModItems.MAROON_POKER_CHIP);
+	}*/
+	
+	@SubscribeEvent
+	public static void registerCustomLoader(ModelEvent.RegisterGeometryLoaders event) {
+		event.register(UnboundElementsLoader.ID, UnboundElementsLoader.LOADER);
+	}
 }

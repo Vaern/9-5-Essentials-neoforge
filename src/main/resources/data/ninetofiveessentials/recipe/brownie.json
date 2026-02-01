@@ -1,13 +1,21 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        "minecraft:cocoa_beans",
-        "minecraft:sugar",
-        "#minecraft:eggs",
-        "minecraft:cocoa_beans"
-    ],
-    "result": {
-        "id": "ninetofiveessentials:brownie",
-        "count": 1
-    }
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:cocoa_beans"
+		},
+		{
+			"item": "minecraft:sugar"
+		},
+		{
+			"item": "minecraft:egg"
+		},
+		{
+			"item": "minecraft:cocoa_beans"
+		}
+	],
+	"result": {
+		"id": "ninetofiveessentials:brownie",
+		"count": 1
+	}
 }

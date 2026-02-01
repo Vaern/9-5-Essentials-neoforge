@@ -1,12 +1,18 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        "ninetofiveessentials:dried_hemp",
-        "ninetofiveessentials:dried_hemp",
-        "ninetofiveessentials:brownie"
-    ],
-    "result": {
-        "id": "ninetofiveessentials:funky_brownie",
-        "count": 1
-    }
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "ninetofiveessentials:dried_hemp"
+		},
+		{
+			"item": "ninetofiveessentials:dried_hemp"
+		},
+		{
+			"item": "ninetofiveessentials:brownie"
+		}
+	],
+	"result": {
+		"id": "ninetofiveessentials:funky_brownie",
+		"count": 1
+	}
 }

@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.ninetofiveessentials.root.description"
     },
-    "background": "ninetofiveessentials:gui/advancements/backgrounds/block_of_cigarettes",
+    "background": "ninetofiveessentials:textures/gui/advancements/backgrounds/block_of_cigarettes",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,

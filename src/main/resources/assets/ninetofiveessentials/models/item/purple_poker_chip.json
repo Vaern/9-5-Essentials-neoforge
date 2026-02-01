@@ -1,0 +1,20 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "ninetofiveessentials:item/poker_chips/purple_poker_chip"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"ninetofiveessentials:count": 2
+			},
+			"model": "ninetofiveessentials:item/poker_chips/purple_poker_chip_small_stack"
+		},
+		{
+			"predicate": {
+				"ninetofiveessentials:count": 32
+			},
+			"model": "ninetofiveessentials:item/poker_chips/purple_poker_chip_large_stack"
+		}
+	]
+}

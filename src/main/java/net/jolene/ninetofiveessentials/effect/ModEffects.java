@@ -1,35 +1,23 @@
 package net.jolene.ninetofiveessentials.effect;
 
 import net.jolene.ninetofiveessentials.NineToFiveEssentials;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModEffects {
-        public static final RegistryEntry<StatusEffect> AILMENT = registerStatusEffect("ailment",
-            new AilmentEffect(StatusEffectCategory.HARMFUL, 0x36ebab)
-                    .addAttributeModifier(EntityAttributes.MAX_HEALTH, Identifier.of(NineToFiveEssentials.MOD_ID, "ailment"), -2f,
-                            EntityAttributeModifier.Operation.ADD_VALUE));
-
-    public static final RegistryEntry<StatusEffect> SERENITY = registerStatusEffect("serenity",
-            new SerenityEffect(StatusEffectCategory.BENEFICIAL, 0x5b8eeb)
-    );
-    public static final RegistryEntry<StatusEffect> OVERCAFFEINATED = registerStatusEffect(
-            "overcaffeinated",
-            new OvercaffeinatedEffect(StatusEffectCategory.BENEFICIAL, 0x783f04)
-    );
-
-
-    private static RegistryEntry<StatusEffect> registerStatusEffect(String name, StatusEffect statusEffect) {
-            return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(NineToFiveEssentials.MOD_ID, name), statusEffect);
-        }
-
-        public static void registerEffects() {
-            NineToFiveEssentials.LOGGER.info("Registering Effects for" + NineToFiveEssentials.MOD_ID);
-        }
-    }
+	
+	public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, NineToFiveEssentials.MODID);
+	
+	public static final DeferredHolder<MobEffect, MobEffect> AILMENT = MOB_EFFECTS.register("ailment", () -> new AilmentEffect(MobEffectCategory.HARMFUL, 0x36EBAB));
+	public static final DeferredHolder<MobEffect, MobEffect> SERENITY = MOB_EFFECTS.register("serenity", () -> new SerenityEffect(MobEffectCategory.BENEFICIAL, 0x5B8EEB));
+	public static final DeferredHolder<MobEffect, MobEffect> OVERCAFFEINATED = MOB_EFFECTS.register("overcaffeinated", () -> new OvercaffeinatedEffect(MobEffectCategory.BENEFICIAL, 0x783F04));
+	
+	public static void registerMobEffects(IEventBus eventBus) {
+		NineToFiveEssentials.LOGGER.info("Registering Effects for" + NineToFiveEssentials.MODID);
+		MOB_EFFECTS.register(eventBus);
+	}
+}

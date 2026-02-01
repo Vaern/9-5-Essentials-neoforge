@@ -1,6 +1,21 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "ninetofiveessentials:item/baguette"
-  }
+	"loader": "neoforge:separate_transforms",
+	"base": {
+		"parent": "ninetofiveessentials:item/baguette_3d"
+	},
+	"gui_light": "front",
+	"textures": {
+		"particle": "ninetofiveessentials:item/baguette_3d"
+	},
+	"perspectives": {
+		"gui": {
+			"parent": "ninetofiveessentials:item/baguette_2d"
+		},
+		"ground": {
+			"parent": "ninetofiveessentials:item/baguette_2d"
+		},
+		"fixed": {
+			"parent": "ninetofiveessentials:item/baguette_2d"
+		}
+	}
 }

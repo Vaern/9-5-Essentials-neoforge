@@ -1,15 +1,17 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "#  ",
-        "## ",
-        "###"
-    ],
-    "key": {
-        "#": "ninetofiveessentials:tar_bricks"
-    },
-    "result": {
-        "id": "ninetofiveessentials:tar_brick_stairs",
-        "count": 6
-    }
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"#  ",
+		"## ",
+		"###"
+	],
+	"key": {
+		"#": {
+			"item": "ninetofiveessentials:tar_bricks"
+		}
+	},
+	"result": {
+		"id": "ninetofiveessentials:tar_brick_stairs",
+		"count": 6
+	}
 }

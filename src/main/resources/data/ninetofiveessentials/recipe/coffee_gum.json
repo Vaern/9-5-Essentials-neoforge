@@ -1,12 +1,18 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        "ninetofiveessentials:coffee_beans",
-        "ninetofiveessentials:coffee_beans",
-        "minecraft:leather"
-    ],
-    "result": {
-        "id": "ninetofiveessentials:coffee_gum",
-        "count": 3
-    }
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "ninetofiveessentials:coffee_beans"
+		},
+		{
+			"item": "ninetofiveessentials:coffee_beans"
+		},
+		{
+			"item": "minecraft:leather"
+		}
+	],
+	"result": {
+		"id": "ninetofiveessentials:coffee_gum",
+		"count": 3
+	}
 }

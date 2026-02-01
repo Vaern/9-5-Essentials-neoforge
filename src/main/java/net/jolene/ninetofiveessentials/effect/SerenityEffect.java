@@ -1,29 +1,31 @@
 package net.jolene.ninetofiveessentials.effect;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 
-public class SerenityEffect extends StatusEffect {
-    public SerenityEffect(StatusEffectCategory category, int color) {
-        super(category, color);
-    }
-    @Override
-    public boolean canApplyUpdateEffect(int duration, int amplifier) {
-        return true;
-    }
-    @Override
-    public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
-        if (world.isClient()) return false;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Enemy;
 
-        if (entity instanceof HostileEntity hostile) {
-            hostile.setTarget(null);
-            hostile.setAttacking(false);
-        }
+public class SerenityEffect extends MobEffect {
 
-        return super.applyUpdateEffect(world, entity, amplifier);
-    }
+	protected SerenityEffect(MobEffectCategory category, int color) {
+		super(category, color);
+	}
+	
+	@Override
+	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+		return true;
+	}
+	
+	@Override
+	public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+		if(entity.level().isClientSide()) return true;
+		
+		if(entity instanceof Enemy && entity instanceof Mob mob) {
+			mob.setTarget(null); //TODO: kinda ineffective at preventing attacks
+			mob.setAggressive(false);
+		}
+		
+		return true;
+	}
 }
-

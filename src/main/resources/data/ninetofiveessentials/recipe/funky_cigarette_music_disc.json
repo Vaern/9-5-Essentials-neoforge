@@ -1,16 +1,20 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "###",
-        "#M#",
-        "###"
-    ],
-    "key": {
-        "#": "ninetofiveessentials:dried_hemp",
-        "M": "minecraft:music_disc_cat"
-    },
-    "result": {
-        "id": "ninetofiveessentials:funky_cigarette_music_disc",
-        "count": 1
-    }
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"###",
+		"#M#",
+		"###"
+	],
+	"key": {
+		"#": {
+			"item": "ninetofiveessentials:dried_hemp"
+		},
+		"M": {
+			"item": "minecraft:music_disc_cat"
+		}
+	},
+	"result": {
+		"id": "ninetofiveessentials:funky_cigarette_music_disc",
+		"count": 1
+	}
 }

@@ -1,112 +1,62 @@
 package net.jolene.ninetofiveessentials.block;
 
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.jolene.ninetofiveessentials.NineToFiveEssentials;
 import net.jolene.ninetofiveessentials.block.custom.*;
-import net.jolene.ninetofiveessentials.item.ModItems;
-import net.minecraft.block.*;
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
-
-import java.util.function.Function;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.PushReaction;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 public class ModBlocks {
-
-    public static final Block BRITNEY = registerBlock("britney",
-            AbstractBlock.Settings.copy(Blocks.BLACK_WOOL));
-
-    public static final Block FIVE_HUNDRED_CIGARETTES = registerBlock("five_hundred_cigarettes",
-            AbstractBlock.Settings.copy(Blocks.BLACK_WOOL));
-
-    public static final Block TAR_BRICKS = registerBlock("tar_bricks",
-            properties -> new Block(properties.strength(3f).requiresTool()));
-    public static final Block TAR_BRICK_SLAB = registerBlock("tar_brick_slab",
-            properties -> new SlabBlock(properties.strength(2f).requiresTool()));
-    public static final Block TAR_BRICK_STAIRS = registerBlock("tar_brick_stairs",
-            properties -> new StairsBlock(ModBlocks.TAR_BRICKS.getDefaultState(),
-                    properties.strength(2f).requiresTool()));
-
-
-    public static final Block HEMP_PLANT = registerBlockWithoutBlockItem("hemp",
-            properties -> new HempPlantBlock(properties.noCollision()
-                    .ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)
-                    .pistonBehavior(PistonBehavior.DESTROY)));
-    public static final Block COFFEE_BUSH = registerBlockWithoutBlockItem("coffee",
-            properties -> new CoffeeBushBlock(properties.noCollision()
-                    .ticksRandomly().breakInstantly().sounds(BlockSoundGroup.CROP)
-                    .pistonBehavior(PistonBehavior.DESTROY)));
-
-    public static final Block DICE = registerBlockWithItem("dice",
-            settings -> new DiceBlock(
-                    settings
-                            .strength(0.0f)  // Instantly breakable
-                            .sounds(BlockSoundGroup.BONE)
-                            .nonOpaque()
-            ));
-    public static final Block SLOT_MACHINE = registerBlockWithItem("slot_machine",
-            settings -> new DartBoardBlock(
-                    settings
-                            .strength(3.0f)
-                            .sounds(BlockSoundGroup.IRON)
-                            .nonOpaque()
-                            .requiresTool()
-            ));
-
-    private static Block registerBlockWithItem(String name, Function<AbstractBlock.Settings, Block> blockFactory) {
-        RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(NineToFiveEssentials.MOD_ID, name));
-        AbstractBlock.Settings settings = AbstractBlock.Settings.create().registryKey(blockKey);
-
-        Block block = blockFactory.apply(settings);
-        Registry.register(Registries.BLOCK, blockKey, block);
-
-        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(NineToFiveEssentials.MOD_ID, name));
-        BlockItem item = new BlockItem(block, new Item.Settings().registryKey(itemKey));
-        Registry.register(Registries.ITEM, itemKey, item);
-
-        return block;
-    }
-
-    private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> function) {
-        Block toRegister = function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(NineToFiveEssentials.MOD_ID, name))));
-        registerBlockItem(name, toRegister);
-        return Registry.register(Registries.BLOCK, Identifier.of(NineToFiveEssentials.MOD_ID, name), toRegister);
-    }
-    private static Block registerBlock(String name, AbstractBlock.Settings blockSettings) {
-        RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(NineToFiveEssentials.MOD_ID, name));
-        Block block = new Block(blockSettings.registryKey(key));
-        registerBlockItem(name, block);
-        return Registry.register(Registries.BLOCK, key, block);
-    }
-    private static void registerBlockItem(String name, Block block) {
-        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(NineToFiveEssentials.MOD_ID, name));
-        BlockItem item = new BlockItem(block, new Item.Settings().registryKey(key));
-        Registry.register(Registries.ITEM, key, item);
-    }
-    private static Block registerBlockWithoutBlockItem(String name, Function<AbstractBlock.Settings, Block> function) {
-        return Registry.register(Registries.BLOCK, Identifier.of(NineToFiveEssentials.MOD_ID, name),
-                function.apply(AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(NineToFiveEssentials.MOD_ID, name)))));
-    }
-
-    public static void registerModBlocks() {
-        NineToFiveEssentials.LOGGER.info("Registering Blocks for " + NineToFiveEssentials.MOD_ID);
-
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
-            entries.add(ModBlocks.SLOT_MACHINE);
-            entries.add(ModBlocks.DICE);
-        });
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> {
-            entries.add(ModBlocks.TAR_BRICKS);
-            entries.add(ModBlocks.TAR_BRICK_STAIRS);
-            entries.add(ModBlocks.TAR_BRICK_SLAB);
-            entries.add(ModBlocks.FIVE_HUNDRED_CIGARETTES);
-        });
-    }
+	//DeferredRegister for blocks
+	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(NineToFiveEssentials.MODID);
+	
+	/* BLOCK REGISTRATION
+	 * excludes BlockItems */
+	public static final DeferredBlock<Block> BRITNEY = BLOCKS.registerSimpleBlock("britney", BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL));
+	
+	public static final DeferredBlock<Block> FIVE_HUNDRED_CIGARETTES = BLOCKS.registerSimpleBlock("five_hundred_cigarettes", BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_WOOL));
+	
+	public static final DeferredBlock<Block> TAR_BRICKS = BLOCKS.registerSimpleBlock("tar_bricks", 
+			BlockBehaviour.Properties.of().strength(3f).requiresCorrectToolForDrops());
+	public static final DeferredBlock<SlabBlock> TAR_BRICK_SLAB = BLOCKS.registerBlock("tar_brick_slab", SlabBlock::new,
+			BlockBehaviour.Properties.of().strength(2f).requiresCorrectToolForDrops());
+	public static final DeferredBlock<StairBlock> TAR_BRICK_STAIRS = BLOCKS.registerBlock("tar_brick_stairs", 
+			properties -> new StairBlock(TAR_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.of().strength(2f).requiresCorrectToolForDrops()));
+	
+	public static final DeferredBlock<HempPlantBlock> HEMP_PLANT = BLOCKS.registerBlock("hemp", HempPlantBlock::new, 
+			BlockBehaviour.Properties.of().noCollission().instabreak().randomTicks().pushReaction(PushReaction.DESTROY));
+	public static final DeferredBlock<CoffeeBushBlock> COFFEE_BUSH = BLOCKS.registerBlock("coffee", CoffeeBushBlock::new, 
+			BlockBehaviour.Properties.of().noCollission().instabreak().randomTicks().pushReaction(PushReaction.DESTROY));
+	
+	public static final DeferredBlock<DiceBlock> DICE = BLOCKS.registerBlock("dice", DiceBlock::new,
+			BlockBehaviour.Properties.of().instabreak().sound(SoundType.BONE_BLOCK).noOcclusion().isViewBlocking((state, level, pos) -> false));
+	
+	//TODO slot machine
+	
+	//Registers the Block DeferredRegister and block type event to the bus
+	public static void registerModBlocks(IEventBus eventBus) {
+		NineToFiveEssentials.LOGGER.info("Registering Blocks for " + NineToFiveEssentials.MODID);
+		BLOCKS.register(eventBus);
+		eventBus.addListener(ModBlocks::registerBlockTypes);
+		
+	}
+	
+	//Registers subclass block types directly (no ancillary helper)
+	private static void registerBlockTypes(RegisterEvent event) {
+		event.register(BuiltInRegistries.BLOCK_TYPE.key(), registry -> {
+			//inherits name from blocks
+			registry.register(HEMP_PLANT.getId(), HEMP_PLANT.get().codec());
+			registry.register(COFFEE_BUSH.getId(), COFFEE_BUSH.get().codec());
+			registry.register(DICE.getId(), DICE.get().codec());
+		});
+	}
 }

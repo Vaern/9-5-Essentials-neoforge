@@ -1,37 +1,41 @@
 package net.jolene.ninetofiveessentials.sound;
 
 import net.jolene.ninetofiveessentials.NineToFiveEssentials;
-import net.minecraft.block.jukebox.JukeboxSong;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.JukeboxSong;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModSounds {
-    public static final SoundEvent PUFF = registerSoundEvent("puff");
-    public static final SoundEvent FIZZLE = registerSoundEvent("fizzle");
-    public static final SoundEvent RESULT= registerSoundEvent("result");
-    public static final SoundEvent WHEEL = registerSoundEvent("wheel");
-    public static final SoundEvent COUGH = registerSoundEvent("cough");
-    public static final SoundEvent DISC = registerSoundEvent("disc");
-
-    public static final SoundEvent DARK_IS_THE_NIGHT = registerSoundEvent("dark_is_the_night");
-public static final RegistryKey<JukeboxSong> DARK_IS_THE_NIGHT_KEY =
-        RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(NineToFiveEssentials.MOD_ID, "dark_is_the_night"));
-
-    public static final SoundEvent FUNKY_CIGARETTE = registerSoundEvent("funky_cigarette");
-    public static final RegistryKey<JukeboxSong> FUNKY_CIGARETTE_KEY =
-            RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Identifier.of(NineToFiveEssentials.MOD_ID, "funky_cigarette"));
-
-
-    private static SoundEvent registerSoundEvent(String name) {
-        Identifier id = Identifier.of(NineToFiveEssentials.MOD_ID, name);
-        return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
-    }
-
-    public static void registerModSounds() {
-        NineToFiveEssentials.LOGGER.info("Registering Sounds for " + NineToFiveEssentials.MOD_ID);
-    }
+	
+	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(BuiltInRegistries.SOUND_EVENT, NineToFiveEssentials.MODID);
+	
+	public static final Holder<SoundEvent> PUFF = registerSoundEvent("puff");
+	public static final Holder<SoundEvent> FIZZLE = registerSoundEvent("fizzle");
+	public static final Holder<SoundEvent> RESULT = registerSoundEvent("result");
+	public static final Holder<SoundEvent> WHEEL = registerSoundEvent("wheel");
+	public static final Holder<SoundEvent> COUGH = registerSoundEvent("cough");
+	
+	public static final Holder<SoundEvent> DARK_IS_THE_NIGHT = registerSoundEvent("dark_is_the_night");
+	public static final ResourceKey<JukeboxSong> DARK_IS_THE_NIGHT_KEY = registerJukeboxSong("dark_is_the_night");
+	public static final Holder<SoundEvent> FUNKY_CIGARETTE = registerSoundEvent("funky_cigarette");
+	public static final ResourceKey<JukeboxSong> FUNKY_CIGARETTE_KEY = registerJukeboxSong("funky_cigarette");
+	
+	private static Holder<SoundEvent> registerSoundEvent(String id) {
+		return SOUND_EVENTS.register(id, name -> SoundEvent.createVariableRangeEvent(name));
+	}
+	
+	private static ResourceKey<JukeboxSong> registerJukeboxSong(String id) {
+		return ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(NineToFiveEssentials.MODID, id));
+	}
+	
+	public static void registerSoundEvents(IEventBus eventBus) {
+		NineToFiveEssentials.LOGGER.info("Registering Sounds for " + NineToFiveEssentials.MODID);
+		SOUND_EVENTS.register(eventBus);
+	}
 }

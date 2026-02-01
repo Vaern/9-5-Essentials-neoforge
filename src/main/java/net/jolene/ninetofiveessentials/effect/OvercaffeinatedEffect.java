@@ -1,30 +1,26 @@
 package net.jolene.ninetofiveessentials.effect;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.Identifier;
 
-public class OvercaffeinatedEffect extends StatusEffect {
-    public static final Identifier MODIFIER_ID_1 =
-            Identifier.of("ninetofiveessentials", "overcaffeinated");
-    public static final Identifier MODIFIER_ID_2 =
-            Identifier.of("ninetofiveessentials", "overcaffeinated");
-    public OvercaffeinatedEffect(StatusEffectCategory category, int color) {
-        super(category, color);
+import net.jolene.ninetofiveessentials.NineToFiveEssentials;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
-        this.addAttributeModifier(
-                EntityAttributes.MOVEMENT_SPEED,
-                MODIFIER_ID_1,
-                0.25,
-                EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
-        );
-        this.addAttributeModifier(
-                EntityAttributes.ATTACK_SPEED,
-                MODIFIER_ID_2,
-                0.75,
-                EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
-        );
-    }
+public class OvercaffeinatedEffect extends MobEffect {
+
+	protected OvercaffeinatedEffect(MobEffectCategory category, int color) {
+		super(category, color);
+		
+		this.addAttributeModifier(Attributes.MOVEMENT_SPEED, 
+				ResourceLocation.fromNamespaceAndPath(NineToFiveEssentials.MODID, "overcaffeinated"), 
+				0.25f, 
+				AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+		
+		this.addAttributeModifier(Attributes.ATTACK_SPEED, 
+				ResourceLocation.fromNamespaceAndPath(NineToFiveEssentials.MODID, "overcaffeinated"), 
+				0.75f, 
+				AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+	}
+
 }

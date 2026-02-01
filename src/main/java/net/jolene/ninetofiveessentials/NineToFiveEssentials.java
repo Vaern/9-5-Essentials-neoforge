@@ -1,41 +1,34 @@
 package net.jolene.ninetofiveessentials;
 
-import net.fabricmc.api.ModInitializer;
+import org.slf4j.Logger;
 
-import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
-import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
+import com.mojang.logging.LogUtils;
+
 import net.jolene.ninetofiveessentials.block.ModBlocks;
 import net.jolene.ninetofiveessentials.effect.ModEffects;
-import net.jolene.ninetofiveessentials.item.ModItemGroups;
+import net.jolene.ninetofiveessentials.item.ModCreativeTabs;
 import net.jolene.ninetofiveessentials.item.ModItemTooltips;
 import net.jolene.ninetofiveessentials.item.ModItems;
-import net.jolene.ninetofiveessentials.particle.ModParticles;
 import net.jolene.ninetofiveessentials.potion.ModPotions;
 import net.jolene.ninetofiveessentials.sound.ModSounds;
-import net.jolene.ninetofiveessentials.util.ModLootTableModifiers;
-import net.minecraft.potion.Potions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
 
-public class NineToFiveEssentials implements ModInitializer {
-	public static final String MOD_ID = "ninetofiveessentials";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+@Mod(NineToFiveEssentials.MODID)
+public class NineToFiveEssentials {
+	public static final String MODID = "ninetofiveessentials";
+	public static final Logger LOGGER = LogUtils.getLogger();
 
-	@Override
-	public void onInitialize() {
-		ModItemGroups.registerItemGroups();
-		ModItems.registerModItems();
-		ModBlocks.registerModBlocks();
-		ModPotions.registerModPotions();
-		ModEffects.registerEffects();
-		ModSounds.registerModSounds();
-		ModParticles.registerModParticles();
-		ModLootTableModifiers.registerLootTableModifiers();
-		FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
-			builder.registerPotionRecipe(Potions.WATER, ModItems.COFFEE_BEANS, ModPotions.COFFEE);
-		});
-		CompostingChanceRegistry.INSTANCE.add(ModItems.COFFEE_CHERRIES, 0.5f);
-		CompostingChanceRegistry.INSTANCE.add(ModItems.HEMP_LEAVES, 0.5f);
-		CompostingChanceRegistry.INSTANCE.add(ModItems.HEMP_SEEDS, 0.25f);
+	public NineToFiveEssentials(IEventBus modEventBus, ModContainer modContainer) {
+		
+		//Since we are only registering deferred registers/event listeners, order shouldn't matters
+		ModBlocks.registerModBlocks(modEventBus);
+		ModItems.registerModItems(modEventBus);
+		ModItemTooltips.registerModItemTooltips(modEventBus);
+		ModEffects.registerMobEffects(modEventBus);
+		ModPotions.registerModPotions(modEventBus);
+		ModSounds.registerSoundEvents(modEventBus);
+		ModCreativeTabs.registerCreativeTabs(modEventBus);
 	}
 }

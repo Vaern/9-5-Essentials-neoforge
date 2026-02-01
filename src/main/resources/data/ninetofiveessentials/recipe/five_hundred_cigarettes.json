@@ -1,15 +1,17 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "CCC",
-        "CCC",
-        "CCC"
-    ],
-    "key": {
-        "C": "ninetofiveessentials:cigarette"
-    },
-    "result": {
-        "id": "ninetofiveessentials:five_hundred_cigarettes",
-        "count": 1
-    }
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"CCC",
+		"CCC",
+		"CCC"
+	],
+	"key": {
+		"C": {
+			"item": "ninetofiveessentials:cigarette"
+		}
+	},
+	"result": {
+		"id": "ninetofiveessentials:five_hundred_cigarettes",
+		"count": 1
+	}
 }

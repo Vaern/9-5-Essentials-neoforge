@@ -1,0 +1,13 @@
+{
+	"values": {
+		"ninetofiveessentials:coffee_cherries": {
+			"chance": 0.5
+		},
+		"ninetofiveessentials:hemp_leaves": {
+			"chance": 0.5
+		},
+		"ninetofiveessentials:hemp_seeds": {
+			"chance": 0.25
+		}
+	}
+}

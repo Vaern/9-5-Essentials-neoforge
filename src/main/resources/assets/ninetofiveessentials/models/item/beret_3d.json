@@ -1,4 +1,5 @@
 {
+	"loader": "ninetofiveessentials:unbound_elements_loader",
 	"format_version": "1.21.6",
 	"credit": "Made with love by Jolene <3",
 	"texture_size": [32, 32],
@@ -6,7 +7,7 @@
 		"0": "ninetofiveessentials:item/beret_3d",
 		"particle": "ninetofiveessentials:item/beret_3d"
 	},
-	"elements": [
+	"elements_unbound": [
 		{
 			"from": [3, 0, 3],
 			"to": [13, 3, 13],

@@ -6,6 +6,7 @@
 	"textures": {
 		"cross": "ninetofiveessentials:block/coffee/coffee_stage0"
 	},
+	"render_type": "minecraft:cutout",
 	"elements": [
 		{
 			"from": [-2, 0, 8],

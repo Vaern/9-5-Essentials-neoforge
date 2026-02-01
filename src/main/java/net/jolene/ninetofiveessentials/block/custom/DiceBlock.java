@@ -1,109 +1,82 @@
 package net.jolene.ninetofiveessentials.block.custom;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.entity.FallingBlockEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FallingBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 public class DiceBlock extends FallingBlock {
-    public static final EnumProperty<Direction> FACING = EnumProperty.of("facing", Direction.class);
-
-    public DiceBlock(Settings settings) {
-        super(settings);
-        this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.UP));
-    }
-
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
-    }
-
-    @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-
-        return this.getDefaultState();
-    }
-
-    @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-    @Override
-    public void onLanding(World world, BlockPos pos, BlockState fallState, BlockState hitState, FallingBlockEntity entity) {
-        super.onLanding(world, pos, fallState, hitState, entity);
-
-        if (!world.isClient() && world instanceof ServerWorld serverWorld) {
-            Direction randomFacing = Direction.random(world.getRandom());
-            BlockState newState = fallState.with(FACING, randomFacing);
-
-
-            world.setBlockState(pos, newState, 3);
-            world.updateNeighbors(pos, this);
-
-
-            serverWorld.spawnParticles(
-                    new BlockStateParticleEffect(ParticleTypes.BLOCK, newState),
-                    pos.getX() + 0.5,
-                    pos.getY() + 0.5,
-                    pos.getZ() + 0.5,
-                    20,
-                    0.3, 0.3, 0.3,
-                    0.1
-            );
-        }
-    }
-
-    private int getRollFromFacing(Direction direction) {
-        return switch (direction) {
-            case UP -> 1;
-            case DOWN -> 2;
-            case NORTH -> 3;
-            case SOUTH -> 4;
-            case WEST -> 5;
-            case EAST -> 6;
-        };
-    }
-
-    @Override
-    public boolean hasComparatorOutput(BlockState state) {
-        return true;
-    }
-
-    protected int getComparatorOutput(BlockState state, World world, BlockPos pos, Direction direction) {
-        return getRollFromFacing(state.get(FACING));
-    }
-
-    @Override
-    public boolean emitsRedstonePower(BlockState state) {
-        return false;
-    }
-
-    @Override
-    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
-        return 0;
-    }
-
-    @Override
-    protected MapCodec<? extends FallingBlock> getCodec() {
-        return null;
-    }
-
-    @Override
-    public int getColor(BlockState state, BlockView world, BlockPos pos) {
-        return 0;
-    }
+	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	
+	public DiceBlock(Properties properties) {
+		super(properties);
+		this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP));
+	}
+	
+	@Override
+	public MapCodec<? extends FallingBlock> codec() {
+		return simpleCodec(DiceBlock::new);
+	}
+	
+	@Override
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
+	}
+	
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return this.defaultBlockState();
+	}
+	
+	@Override
+	public void onLand(Level level, BlockPos pos, BlockState state, BlockState replaceableState, FallingBlockEntity fallingBlock) {
+		//never called on the clientside, but just in case
+		if(!level.isClientSide) {//TODO: sounds a bit weird without a landing sound effect
+			Direction random = Direction.getRandom(level.getRandom());
+			
+			level.setBlock(pos, state.setValue(FACING, random), UPDATE_ALL);
+			
+			((ServerLevel) level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), 
+					pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 20, 0.3, 0.3, 0.3, 0.1);
+		}
+	}
+	
+	@Override
+	public int getDustColor(BlockState state, BlockGetter level, BlockPos pos) {
+		return 0;
+	}
+	
+	private int getRollFromFacing(Direction dir) {
+		return switch (dir) {
+		case UP -> 1;
+		case DOWN -> 2;
+		case NORTH -> 3;
+		case SOUTH -> 4;
+		case WEST -> 5;
+		case EAST -> 6;
+		};
+	}
+	
+	@Override
+	protected boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
+	
+	@Override
+	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+		return getRollFromFacing(state.getValue(FACING));
+	}
 }

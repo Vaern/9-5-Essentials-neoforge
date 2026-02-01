@@ -50,12 +50,12 @@
 
   "item.ninetofiveessentials.tar_glob": "Tar Glob",
   "item.ninetofiveessentials.tar_brick": "Tar Brick",
-  "item.ninetofiveessentials.tar_bricks": "Tar Bricks",
-  "item.ninetofiveessentials.tar_brick_stairs": "Tar Brick Stairs",
-  "item.ninetofiveessentials.tar_brick_slab": "Tar Brick Slab",
-  "item.ninetofiveessentials.five_hundred_cigarettes": "Block of Cigarettes",
+  "block.ninetofiveessentials.tar_bricks": "Tar Bricks",
+  "block.ninetofiveessentials.tar_brick_stairs": "Tar Brick Stairs",
+  "block.ninetofiveessentials.tar_brick_slab": "Tar Brick Slab",
+  "block.ninetofiveessentials.five_hundred_cigarettes": "Block of Cigarettes",
   "tooltip.ninetofiveessentials.five_hundred_cigarettes": "§7500 CIGARETTES",
-  "item.ninetofiveessentials.britney": "Block of Britney",
+  "block.ninetofiveessentials.britney": "Block of Britney",
 
   "advancement.ninetofiveessentials.root": "9-5 Essentials",
   "advancement.ninetofiveessentials.root.description": "Everything you need!",

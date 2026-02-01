@@ -1,8 +1,10 @@
 {
-    "type": "minecraft:stonecutting",
-    "ingredient": "ninetofiveessentials:tar_bricks",
-    "result": {
-        "id": "ninetofiveessentials:tar_brick_slab",
-        "count": 2
-    }
+	"type": "minecraft:stonecutting",
+	"ingredient": {
+		"item": "ninetofiveessentials:tar_bricks"
+	},
+	"result": {
+		"id": "ninetofiveessentials:tar_brick_slab",
+		"count": 2
+	}
 }

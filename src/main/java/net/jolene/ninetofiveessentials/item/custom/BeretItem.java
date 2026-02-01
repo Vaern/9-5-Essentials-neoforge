@@ -1,38 +1,25 @@
 package net.jolene.ninetofiveessentials.item.custom;
 
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Equipable;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
-public class BeretItem extends Item {
-    public BeretItem(Settings settings) {
-        super(settings);
-    }
+public class BeretItem extends Item implements Equipable {
+	
+	public BeretItem(Properties properties) { super(properties); }
 
-    @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        EquipmentSlot slot = EquipmentSlot.HEAD;
-
-        if (user.getEquippedStack(slot).isEmpty()) {
-            if (!world.isClient()) {
-                user.equipStack(slot, stack.copy());
-
-                if (!user.getAbilities().creativeMode) {
-                    stack.decrement(1);
-                }
-            }
-
-            return ItemUsage.consumeHeldItem(world, user, hand);
-        }
-
-        return ActionResult.FAIL;
-    }
+	@Override
+	public EquipmentSlot getEquipmentSlot() {
+		return EquipmentSlot.HEAD;
+	}
+	
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		return this.swapWithEquipmentSlot(this, level, player, hand);
+	}
 }
-
-

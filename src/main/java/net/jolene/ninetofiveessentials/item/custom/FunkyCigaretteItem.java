@@ -1,62 +1,47 @@
 package net.jolene.ninetofiveessentials.item.custom;
 
-
 import net.jolene.ninetofiveessentials.item.ModItems;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class FunkyCigaretteItem extends Item {
-
-    public FunkyCigaretteItem(Settings settings) {
-        super(settings);
-    }
-
-    @Override
-
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient()) {
-            Hand offHand = hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND;
-            ItemStack offHandStack = user.getStackInHand(offHand);
-
-            if (offHandStack.getItem() == Items.FLINT_AND_STEEL) {
-                offHandStack.damage(1, user);
-                world.playSound(
-                        null,
-                        user.getX(),
-                        user.getY(),
-                        user.getZ(),
-                        SoundEvents.ITEM_FLINTANDSTEEL_USE,
-                        SoundCategory.MASTER,
-                        0.5F,
-                        1.0F / (world.getRandom().nextFloat() * 0.9F + 1.1F));
-
-                Vec3d lookVec = user.getRotationVec(1.0F);
-                double x = user.getX() + lookVec.x * 0.5;
-                double y = user.getY() + 1.6;
-                double z = user.getZ() + lookVec.z * 0.5;
-
-                ((ServerWorld) world).spawnParticles(
-                        ParticleTypes.LAVA,
-                        x, y, z,
-                        5, 0, 0, 0, 0
-                );
-
-                ItemStack newItem = new ItemStack(ModItems.LIT_FUNKY_CIGARETTE);
-                user.setStackInHand(hand, newItem);
-
-                return ActionResult.SUCCESS;
-            }
-        }
-        return ActionResult.PASS;
-    }
+	
+	public FunkyCigaretteItem(Properties properties) { super(properties); }
+	
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		
+		if(!level.isClientSide()) {
+			InteractionHand offHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+			ItemStack offStack = player.getItemInHand(offHand);
+			
+			if(offStack.getItem() == Items.FLINT_AND_STEEL) {
+				offStack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(offHand));
+				level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+				
+				Vec3 lookVec = player.getLookAngle();
+				double x = player.getX() + lookVec.x * 0.5;
+				double y = player.getY() + 1.6;
+				double z = player.getZ() + lookVec.z * 0.5;
+				
+				((ServerLevel) level).sendParticles(ParticleTypes.LAVA, x, y, z, 5, 0, 0, 0, 0);
+				//doesn't hand swing but does increment stat + use automatically replaces held item
+				return InteractionResultHolder.consume(ModItems.LIT_FUNKY_CIGARETTE.asItem().getDefaultInstance());
+			}
+		}
+		
+		return InteractionResultHolder.pass(stack);
+	}
 }

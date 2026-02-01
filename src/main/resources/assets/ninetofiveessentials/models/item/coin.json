@@ -1,0 +1,20 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "ninetofiveessentials:item/coin/coin"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"ninetofiveessentials:count": 2
+			},
+			"model": "ninetofiveessentials:item/coin/coin_small_stack"
+		},
+		{
+			"predicate": {
+				"ninetofiveessentials:count": 32
+			},
+			"model": "ninetofiveessentials:item/coin/coin_large_stack"
+		}
+	]
+}
