@@ -63,7 +63,7 @@ public class LitFunkyCigaretteItem extends Item {
 		return InteractionResultHolder.success(stack);
 	}
 	
-	@Override //TODO CHECK THIS
+	@Override
 	public int getBarWidth(ItemStack stack) {
         return Math.round(13.0F - (float)stack.getDamageValue() * 13.0F / (float)(this.getMaxDamage(stack) - 1));
     }

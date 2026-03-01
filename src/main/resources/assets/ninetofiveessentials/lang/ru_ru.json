@@ -50,12 +50,12 @@
 
   "item.ninetofiveessentials.tar_glob": "Смоляной Сгусток",
   "item.ninetofiveessentials.tar_brick": "Смоляной Кирпич",
-  "item.ninetofiveessentials.tar_bricks": "Смоляные Кирпичи",
-  "item.ninetofiveessentials.tar_brick_stairs": "Смоляные Ступеньки",
-  "item.ninetofiveessentials.tar_brick_slab": "Смоляная Плита",
-  "item.ninetofiveessentials.five_hundred_cigarettes": "Блок Сигарет",
+  "block.ninetofiveessentials.tar_bricks": "Смоляные Кирпичи",
+  "block.ninetofiveessentials.tar_brick_stairs": "Смоляные Ступеньки",
+  "block.ninetofiveessentials.tar_brick_slab": "Смоляная Плита",
+  "block.ninetofiveessentials.five_hundred_cigarettes": "Блок Сигарет",
   "tooltip.ninetofiveessentials.five_hundred_cigarettes": "§7500 СИГАРЕТ",
-  "item.ninetofiveessentials.britney": "Блок Бритни",
+  "block.ninetofiveessentials.britney": "Блок Бритни",
 
   "advancement.ninetofiveessentials.root": "9-5 Необходимостей",
   "advancement.ninetofiveessentials.root.description": "Всё что тебе нужно!",
